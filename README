@@ -1,0 +1,5 @@
+lmmCreate 및 llmEdit 파일을 수정하고 AWS에 올리기 전:
+
+  - 버킷 이름 설정: "your-s3-bucket-name"을 본인의 S3 버킷 이름으로 변경하세요.
+  - IAM 역할: Lambda 함수가 S3 버킷에 접근할 수 있도록 적절한 IAM 역할을 설정하세요.
+    S3에 대한 읽기 및 쓰기 권한이 필요합니다.

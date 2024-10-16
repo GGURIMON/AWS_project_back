@@ -1,0 +1,8 @@
+fastapi[all]
+pydantic
+uvicorn
+boto3
+pillow
+mangum
+aws-cdk-lib
+constructs
