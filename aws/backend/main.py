@@ -5,6 +5,7 @@ from fastapi.responses import HTMLResponse
 from starlette.requests import Request
 from router import lmmCreate as create
 from router import lmmEdit as edit
+from router import test
 import json
 
 # FastAPI 인스턴스 생성
@@ -16,7 +17,7 @@ templates = Jinja2Templates(directory="templates")
 # 라우터 등록
 app.include_router(create.router)
 app.include_router(edit.router)
-
+app.include_router(test.router)
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
@@ -26,29 +27,12 @@ app.add_middleware(
     allow_headers=["*"],  # 모든 헤더 허용
 )
 
-@app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+# @app.get("/", response_class=HTMLResponse)
+# async def home(request: Request):
+#     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/about", response_class=HTMLResponse, tags=['side'])
-async def about(request: Request):
-    return templates.TemplateResponse("about.html", {"request": request})
-
-@app.get("/faq", response_class=HTMLResponse, tags=['side'])
-async def faq(request: Request):
-    return templates.TemplateResponse("faq.html", {"request": request})
-
-@app.get("/contact", response_class=HTMLResponse, tags=['side'])
-async def contact(request: Request):
-    return templates.TemplateResponse("contact.html", {"request": request})
-
-@app.get("/test")
-async def test(request: str):
-    return {"message": "success"}
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port = 8000)
+@app.get("/", status_code = status.HTTP_200_OK)
+async def home():
+    return {"message": "this is for a test"}
 
 handler = Mangum(app, lifespan="auto")

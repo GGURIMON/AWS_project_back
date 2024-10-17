@@ -15,8 +15,6 @@ class PromptRequest(BaseModel):
 
 # AWS Translate 클라이언트 생성
 translate = boto3.client('translate', region_name = "us-east-1")
-# AWS S3 클라이언트 생성 (주석 처리된 부분)
-# s3 = boto3.client('s3')
 
 # 번역 함수 정의
 def translate_to_english(korean_text):
@@ -79,11 +77,7 @@ async def create_image(prompt: PromptRequest):
         file_name = f"{output_dir}/generated-{seed}.png"
         with open(file_name, "wb") as f:
             f.write(image_bytes)
-
-        # 생성된 이미지를 S3에 업로드 (주석 처리된 부분)
-        # bucket_name = "your-s3-bucket-name"  # 여기에 본인의 S3 버킷 이름을 넣어야 함
-        # s3_key = f"generated-images/generated-{seed}.png"
-        # s3.put_object(Bucket=bucket_name, Key=s3_key, Body=image_bytes, ContentType='image/png')
+        
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"이미지 생성 중 오류가 발생했습니다: {str(e)}")
@@ -91,13 +85,9 @@ async def create_image(prompt: PromptRequest):
     # Base64 인코딩된 이미지 반환 (Swagger UI에서 테스트 가능하도록 추가)
     image_base64 = base64.b64encode(image_bytes).decode('utf-8')
 
-    # S3 이미지 URL 반환 (주석 처리된 부분)
-    # s3_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
-
     return {
         "message": "Image created successfully",
-        "image_base64": image_base64,
-        # "s3_url": s3_url  # S3 URL 주석 처리
+        "image_base64": image_base64
     }
 
 handler = Mangum(router)
